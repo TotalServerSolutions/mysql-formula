@@ -13,6 +13,7 @@ include:
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
 {% set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
+{% set mysql_root_keep_passwd = salt['pillar.get']('mysql:server:root_keep_password', true) %}
 
 {% if mysql_root_keep_passwd %}
   {% if not salt['file.file_exists' ]('/root/.my.cnf') %}
