@@ -14,6 +14,23 @@ include:
 {% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
 {% set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
 
+{% if mysql_root_keep_passwd %}
+  {% if not salt['file.file_exists' ]('/root/.my.cnf') %}
+
+/root/.my.cnf:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 0440
+    - contents:
+      - '[client]'
+      - "user={{mysql_root_user}}"
+      - "password={{mysql_root_password}}"
+
+  {% endif %}
+{% endif %}
+
+
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
 mysql_debconf_utils:
